@@ -1,0 +1,48 @@
+import { useState } from "react"
+
+const Statistics = (props) => {
+  return(
+    <div>
+      <p>{props.statName}: {props.value} {props.symbol}</p>
+    </div>
+  )
+}
+
+const Button = (props) => (
+  <button onClick={props.handleClick}>
+    {props.text}
+  </button>
+)
+
+const App = () => {
+  // guarda los clics de cada botón en su propio estado
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  const [all, setAll] = useState(0)
+
+  return (
+    <div>
+      <h1>Give here your feedback!</h1>
+      <Button handleClick={() => { setGood(good + 1); setAll(good + 1 + neutral + bad); }} text='Good' />
+      <Button handleClick={() => { setNeutral(neutral + 1); setAll(good + neutral + 1 + bad); }} text='Neutral' />
+      <Button handleClick={() => { setBad(bad + 1); setAll(good + neutral + bad + 1); }} text='Bad' />
+      {all === 0 ? (
+          <div>
+            <p>No feedback given</p>
+          </div>
+      ) : (
+        <div>
+          <Statistics statName='Good' value={good} />
+          <Statistics statName='Neutral' value={neutral} />
+          <Statistics statName='Bad' value={bad} />
+          <Statistics statName='Total' value={all} />
+          <Statistics statName='Average' value={(good - bad) / (all)} />
+          <Statistics statName='Positive' value={(good / (all)) * 100 } symbol='%' />
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default App
